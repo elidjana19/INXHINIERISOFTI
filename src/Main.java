@@ -21,7 +21,10 @@ public class Main extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel mainPanel = new JPanel(new GridLayout(2, 1));
+        JButton loginButton = new JButton("Login");
 
+
+        mainPanel.add(loginButton);
         add(mainPanel);
     }
 
