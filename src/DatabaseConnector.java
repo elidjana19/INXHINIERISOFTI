@@ -8,7 +8,7 @@ public class DatabaseConnector {
     public static Connection connect() {
         try {
             String dbDriver = "com.mysql.cj.jdbc.Driver";
-            String dbURL = "jdbc:mysql://localhost:3307/";
+            String dbURL = "jdbc:mysql://localhost:3306/";
 
             String dbName = "detyre_kursi";
             String dbUsername = "root";

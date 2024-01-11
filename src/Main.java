@@ -21,6 +21,8 @@ public class Main extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel mainPanel = new JPanel(new GridLayout(2, 1));
+
+        JButton registerButton = new JButton("Register");
         JButton loginButton = new JButton("Login");
 
         loginButton.addActionListener(new ActionListener() {
@@ -29,8 +31,15 @@ public class Main extends JFrame {
                System.out.println("hello");
             }
         });
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("hello from register button");
+            }
+        });
 
 
+        mainPanel.add(registerButton);
         mainPanel.add(loginButton);
         add(mainPanel);
     }
