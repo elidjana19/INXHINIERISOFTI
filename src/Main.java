@@ -23,6 +23,13 @@ public class Main extends JFrame {
         JPanel mainPanel = new JPanel(new GridLayout(2, 1));
         JButton loginButton = new JButton("Login");
 
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               System.out.println("hello");
+            }
+        });
+
 
         mainPanel.add(loginButton);
         add(mainPanel);
