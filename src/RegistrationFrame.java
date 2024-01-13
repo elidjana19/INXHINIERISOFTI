@@ -41,4 +41,34 @@ public class RegistrationFrame extends JFrame {
 
         add(mainPanel);
     }
+
+    private void registerAccount() throws SQLException {
+        String inputUsername = usernameField.getText();
+        String inputPassword = passwordField.getText();
+
+        PreparedStatement ps = connection.prepareStatement("select * from users where username=? and password=?");
+
+        ps.setString(1, inputUsername);  // Set the value for the first placeholder
+        ps.setString(2, inputPassword);
+        ResultSet rs = ps.executeQuery();
+        if(rs.next()) {
+            JOptionPane.showMessageDialog(this, "Jeni i regjistruar");
+            dispose();
+            Main main = new Main();
+        }
+        else{
+            PreparedStatement ps1 = connection.prepareStatement("insert into users (username, password) values (?,?)");
+
+            ps1.setString(1, inputUsername);
+            ps1.setString(2, inputPassword);
+            if( ps1.executeUpdate()==1)
+            {
+                JOptionPane.showMessageDialog(this,"Rregjistrimi u krye me sukses");
+                dispose();
+                Main main=new Main();
+
+            }
+        }
+
+    }
 }
