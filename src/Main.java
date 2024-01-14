@@ -28,7 +28,7 @@ public class Main extends JFrame {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               System.out.println("hello");
+               openLoginFrame();
             }
         });
         registerButton.addActionListener(new ActionListener() {
@@ -48,6 +48,13 @@ public class Main extends JFrame {
     private void openRegistrationFrame() {
         RegistrationFrame registrationFrame = new RegistrationFrame(connection);
         registrationFrame.setVisible(true);
+    }
+
+    private void openLoginFrame() {
+        LoginFrame loginFrame = new LoginFrame(connection);
+        dispose();
+        loginFrame.setVisible(true);
+
     }
 
     public static void main(String[] args) {

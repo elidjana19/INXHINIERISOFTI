@@ -32,6 +32,13 @@ public class LoginFrame extends JFrame {
 
         JButton loginButton = new JButton("Login");
 
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("login button ok");
+            }
+        });
+
 
         mainPanel.add(usernameLabel);
         mainPanel.add(usernameField);
@@ -41,6 +48,9 @@ public class LoginFrame extends JFrame {
 
         add(mainPanel);
     }
+
+
+
 
     
 }
