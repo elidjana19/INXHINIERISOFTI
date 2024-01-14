@@ -33,6 +33,18 @@ public class RegistrationFrame extends JFrame {
         JButton registerButton = new JButton("Register");
 
 
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    registerAccount();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
+
         mainPanel.add(usernameLabel);
         mainPanel.add(usernameField);
         mainPanel.add(passwordLabel);
