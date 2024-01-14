@@ -45,6 +45,35 @@ public class CourseManager {
         }
     }
 
+    public boolean dropCourse(String username, String courseName) {
+        try {
+            // kontrollon nese perdoruesi eshte tashme i rregjistruar
+            String checkQuery = "SELECT * FROM registrations WHERE username = ? AND course_name = ?";
+            try (PreparedStatement checkStatement = connection.prepareStatement(checkQuery)) {
+                checkStatement.setString(1, username);
+                checkStatement.setString(2, courseName);
+
+                try (ResultSet resultSet = checkStatement.executeQuery()) {
+                    if (!resultSet.next()) {
+                        return false; // nuk eshte i rregjistruar
+                    }
+                }
+            }
+
+            // heq perdoruesin nga kursi
+            String dropQuery = "DELETE FROM registrations WHERE username = ? AND course_name = ?";
+            try (PreparedStatement dropStatement = connection.prepareStatement(dropQuery)) {
+                dropStatement.setString(1, username);
+                dropStatement.setString(2, courseName);
+                dropStatement.executeUpdate();
+                return true; //c'rregjistrimi u be me sukses
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
 
 
