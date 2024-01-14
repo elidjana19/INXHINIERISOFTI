@@ -34,7 +34,7 @@ public class Main extends JFrame {
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("hello from register button");
+               openRegistrationFrame();
             }
         });
 
@@ -42,6 +42,12 @@ public class Main extends JFrame {
         mainPanel.add(registerButton);
         mainPanel.add(loginButton);
         add(mainPanel);
+    }
+
+
+    private void openRegistrationFrame() {
+        RegistrationFrame registrationFrame = new RegistrationFrame(connection);
+        registrationFrame.setVisible(true);
     }
 
     public static void main(String[] args) {
