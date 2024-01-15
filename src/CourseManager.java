@@ -129,6 +129,13 @@ public class CourseManager {
         return ratings;
     }
 
+    private double calculateAverageRating(List<Integer> ratings) {
+        if (ratings != null && !ratings.isEmpty()) {
+            return ratings.stream().mapToInt(Integer::intValue).average().orElse(0.0);
+        }
+        return 0.0;
+    }
+
 
 
 
