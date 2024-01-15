@@ -75,6 +75,43 @@ public class CourseManager {
     }
 
 
+    public List<String> getAllCourses() {
+        List<String> courses = new ArrayList<>();
+        try {
+            String query = "SELECT course_name FROM courses";
+            try (PreparedStatement statement = connection.prepareStatement(query);
+                 ResultSet resultSet = statement.executeQuery()) {
+
+                while (resultSet.next()) {
+                    courses.add(resultSet.getString("course_name"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
+
+    private int getNumberOfRegisteredStudents(String courseName) {
+        try {
+            String countQuery = "SELECT COUNT(*) FROM registrations WHERE course_name = ?";
+            try (PreparedStatement countStatement = connection.prepareStatement(countQuery)) {
+                countStatement.setString(1, courseName);
+
+                try (ResultSet resultSet = countStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
+
 
 
 }
