@@ -59,5 +59,28 @@ public class FeedbackManager {
         }
     }
 
+    public static List<String> viewFeedback(String courseName) {
+        List<String> feedbackList = new ArrayList<>();
+        try {
+            String viewFeedbackQuery = "SELECT * FROM feedback WHERE course_name = ? ORDER BY date DESC";
+            try (PreparedStatement viewFeedbackStatement = connection.prepareStatement(viewFeedbackQuery)) {
+                viewFeedbackStatement.setString(1, courseName);
+
+                try (ResultSet resultSet = viewFeedbackStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        String feedback = "Username: " + resultSet.getString("username") + "\n" +
+                                "Description: " + resultSet.getString("description") + "\n" +
+                                "Rating: " + resultSet.getInt("rating") + "\n" +
+                                "Date: " + resultSet.getDate("date");
+                        feedbackList.add(feedback);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return feedbackList;
+    }
+
 
 }
