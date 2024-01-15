@@ -12,6 +12,7 @@ public class FeedbackManager {
     public FeedbackManager(Connection connection) {
 
         this.connection = connection;
+        removeOldFeedback();
 
     }
 
@@ -80,6 +81,21 @@ public class FeedbackManager {
             e.printStackTrace();
         }
         return feedbackList;
+    }
+
+    public void removeOldFeedback() {
+        try {
+            String deleteQuery = "DELETE FROM feedback WHERE date < DATE_SUB(NOW(), INTERVAL 1 YEAR) ?";
+            long oneYearAgoInMillis = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(365);
+
+            try (PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
+                deleteStatement.setDate(1, new java.sql.Date(oneYearAgoInMillis));
+                int rowsDeleted = deleteStatement.executeUpdate();
+                System.out.println(rowsDeleted + " old feedback entries removed.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
