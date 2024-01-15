@@ -137,14 +137,34 @@ public class CourseManager {
     }
 
 
+    public List<String> getTopRatedCourses() {
+        Map<String, Double> averageRatings = new HashMap<>();
 
+        // iteron ne kurset
+        List<String> allCourses = getAllCourses();
+        for (String course : allCourses) {
+            // merr rating te feedback nga databaza
+            List<Integer> ratings = getFeedbackRatings(course);
 
+            // llogarit rating mesatar
+            double averageRating = calculateAverageRating(ratings);
 
+            // e hedh ne map
+            averageRatings.put(course, averageRating);
+        }
 
+        // rendit kurset nga rating mesatar
+        List<Map.Entry<String, Double>> sortedCourses = new ArrayList<>(averageRatings.entrySet());
+        sortedCourses.sort(Map.Entry.<String, Double>comparingByValue().reversed());
 
+        // merr top rated courses
+        List<String> topRatedCourses = new ArrayList<>();
+        for (Map.Entry<String, Double> entry : sortedCourses) {
+            topRatedCourses.add(entry.getKey());
+        }
 
-
-
+        return topRatedCourses;
+    }
 
 
 }
