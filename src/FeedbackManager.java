@@ -83,6 +83,26 @@ public class FeedbackManager {
         return feedbackList;
     }
 
+    public List<String> viewTopRatedCourses() {
+        List<String> topRatedCourses = new ArrayList<>();
+        try {
+            String viewTopRatedQuery = "SELECT course_name, AVG(rating) AS avg_rating FROM feedback GROUP BY course_name " +
+                    "ORDER BY avg_rating DESC LIMIT 8";
+            try (PreparedStatement viewTopRatedStatement = connection.prepareStatement(viewTopRatedQuery);
+                 ResultSet resultSet = viewTopRatedStatement.executeQuery()) {
+
+                while (resultSet.next()) {
+                    String courseInfo = "Course: " + resultSet.getString("course_name") +
+                            ", Average Rating: " + resultSet.getDouble("avg_rating");
+                    topRatedCourses.add(courseInfo);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return topRatedCourses;
+    }
+
     public void removeOldFeedback() {
         try {
             String deleteQuery = "DELETE FROM feedback WHERE date < DATE_SUB(NOW(), INTERVAL 1 YEAR) ?";
