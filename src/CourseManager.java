@@ -110,6 +110,32 @@ public class CourseManager {
         return 0;
     }
 
+    private List<Integer> getFeedbackRatings(String courseName) {
+        List<Integer> ratings = new ArrayList<>();
+        try {
+            String ratingsQuery = "SELECT rating FROM feedback WHERE course_name = ?";
+            try (PreparedStatement ratingsStatement = connection.prepareStatement(ratingsQuery)) {
+                ratingsStatement.setString(1, courseName);
+
+                try (ResultSet resultSet = ratingsStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        ratings.add(resultSet.getInt("rating"));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ratings;
+    }
+
+
+
+
+
+
+
+
 
 
 
