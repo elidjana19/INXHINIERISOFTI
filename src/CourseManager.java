@@ -165,6 +165,27 @@ public class CourseManager {
 
         return topRatedCourses;
     }
+    public String getCourseDetails(String courseName) {
+        try {
+            String detailsQuery = "SELECT * FROM courses WHERE course_name = ?";
+            try (PreparedStatement detailsStatement = connection.prepareStatement(detailsQuery)) {
+                detailsStatement.setString(1, courseName);
 
+                try (ResultSet resultSet = detailsStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return "Course Name: " + resultSet.getString("course_name") + "\n" +
+                                "Description: " + resultSet.getString("description") + "\n" +
+                                "Lecturer: " + resultSet.getString("lecturer") + "\n" +
+                                "Times: " + resultSet.getString("times") + "\n" +
+                                "Location: " + resultSet.getString("location") + "\n" +
+                                "Registered Students: " + getNumberOfRegisteredStudents(courseName);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "Course details not available.";
+    }
 
 }
