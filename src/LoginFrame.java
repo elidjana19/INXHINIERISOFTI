@@ -35,7 +35,11 @@ public class LoginFrame extends JFrame {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("login button ok");
+                try {
+                    login();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
@@ -48,6 +52,38 @@ public class LoginFrame extends JFrame {
 
         add(mainPanel);
     }
+
+
+    private void login() throws SQLException {
+        {
+            String inputUsername = usernameField.getText();
+            String inputPassword = passwordField.getText();
+
+            PreparedStatement ps = connection.prepareStatement("select * from users where username=? and password=?");
+
+            ps.setString(1, inputUsername);  // vendos vlerat ne placeholder
+            ps.setString(2, inputPassword);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()){
+                dispose();
+
+                // hap CourseFrame
+                CourseManager courseManager = new CourseManager(connection);
+                FeedbackManager feedbackManager = new FeedbackManager(connection);
+                CourseFrame courseFrame = new CourseFrame(courseManager, feedbackManager, inputUsername, connection);
+                courseFrame.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Nuk jeni te rregjistruar");
+                dispose();
+                Main main = new Main();
+                main.setVisible(true);
+            }
+        }
+
+    }
+
+
 
 
 
