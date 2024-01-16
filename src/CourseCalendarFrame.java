@@ -33,6 +33,20 @@ public class CourseCalendarFrame extends JFrame {
 
         Object[][] data = new Object[timeSlots.length][daysOfWeek.length + 1]; // +1 for the row header
 
+        // vendos kohen ne kolonen e pare te matrices
+        for (int i = 0; i < timeSlots.length; i++) {
+            data[i][0] = timeSlots[i];
+        }
+
+        // vendos informacionin e kursit ne pjesen e ngelur te matrices
+        for (int i = 0; i < timeSlots.length; i++) {
+            for (int j = 1; j <= daysOfWeek.length; j++) {
+                data[i][j] = getCoursesForCell(daysOfWeek[j - 1], timeSlots[i]);
+            }
+        }
+
+
+
         JTable calendarTable = new JTable(new CourseTableModel(data, daysOfWeek));
         JScrollPane scrollPane = new JScrollPane(calendarTable);
 
@@ -40,6 +54,34 @@ public class CourseCalendarFrame extends JFrame {
         add(mainPanel);
         setVisible(true);
     }
+
+    private String getCoursesForCell(String day, String time) throws SQLException {
+        StringBuilder coursesText = new StringBuilder("<html><body>");
+
+        for (String course : courses) {
+            PreparedStatement ps=connection.prepareStatement("select times from courses where course_name=? ");
+            ps.setString(1,course);
+
+            ResultSet rs=ps.executeQuery();
+            rs.next();
+            String course_time=rs.getString(1);
+
+
+
+            String [] time_parts=course_time.split(" ");
+
+            // kontrollon nese kursi perputhet me diten dhe oren e qelizes ne tabele
+            if (time_parts[0].contains(day) && time_parts[1].contains(time)) {
+
+                coursesText.append(course).append("<br>");
+            }
+        }
+
+
+        coursesText.append("</body></html>");
+        return coursesText.toString();
+    }
+
 
 
     private static class CourseTableModel extends AbstractTableModel {
