@@ -32,8 +32,8 @@ public class CourseFrame extends JFrame {
         List<String> courses = courseManager.getAllCourses();
         CourseTableModel model = new CourseTableModel(courses);
         JTable courseTable = new JTable(model);
-        // courseTable.getColumnModel().getColumn(1).setCellRenderer(new ButtonRenderer());
-        // courseTable.addMouseListener(new ButtonClickListener(courseTable, loggedInUsername));
+        courseTable.getColumnModel().getColumn(1).setCellRenderer(new ButtonRenderer());
+        courseTable.addMouseListener(new ButtonClickListener(courseTable, loggedInUsername));
 
         JScrollPane scrollPane = new JScrollPane(courseTable);
 
@@ -132,6 +132,40 @@ public class CourseFrame extends JFrame {
         @Override
         public String getColumnName(int column) {
             return columnNames[column];
+        }
+    }
+
+    private class ButtonRenderer extends JButton implements TableCellRenderer {
+        public ButtonRenderer() {
+            setOpaque(true);
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            return (Component) value;
+        }
+    }
+
+    private class ButtonClickListener extends java.awt.event.MouseAdapter {
+        private final JTable table;
+        private final String loggedInUsername;
+
+        public ButtonClickListener(JTable table, String loggedInUsername) {
+            this.table = table;
+            this.loggedInUsername = loggedInUsername;
+        }
+
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            int column = table.getColumnModel().getColumnIndexAtX(evt.getX());
+            int row = evt.getY() / table.getRowHeight();
+
+            if (row < table.getRowCount() && row >= 0 && column < table.getColumnCount() && column >= 0) {
+                Object value = table.getValueAt(row, column);
+                if (value instanceof JButton) {
+                    ((JButton) value).doClick();
+                }
+            }
         }
     }
 
